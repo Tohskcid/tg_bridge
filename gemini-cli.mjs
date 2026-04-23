@@ -1,0 +1,1 @@
+/Users/lixinzhe/gemini-bot/node_modules/@google/gemini-cli/bundle/bundled/chrome-devtools-mjs.mjs
