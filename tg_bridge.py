@@ -41,7 +41,7 @@ def mcp_tool_to_ollama(tool: Any) -> Dict[str, Any]:
 
 # --- Orchestration Logic ---
 class HybridBridge:
-    def __init__(self, mode: str, local_model: str = "gemma3n:e2b"):
+    def __init__(self, mode: str, local_model: str = "gemma4:e2b"):
         self.mode = mode
         self.local_model = local_model
         
@@ -124,8 +124,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def maintain_models():
     print("🧹 Cleaning up models...")
     subprocess.run(["ollama", "rm", "gemma4:e4b"], capture_output=True)
-    print("📥 Ensuring gemma3n:e2b is ready...")
-    subprocess.run(["ollama", "pull", "gemma3n:e2b"], capture_output=True) 
+    print("📥 Ensuring gemma4:e2b is ready...")
+    subprocess.run(["ollama", "pull", "gemma4:e2b"], capture_output=True) 
 
 if __name__ == '__main__':
     if not TOKEN or not GEMINI_API_KEY:
@@ -134,14 +134,14 @@ if __name__ == '__main__':
 
     print("--- Antigravity Mode Selection ---")
     print("1. Online Mode (Gemini 2.0 Flash Lite)")
-    print("2. Offline Mode (Local Gemma 3n:e2b)")
+    print("2. Offline Mode (Local Gemma 4:e2b)")
     choice = input("Select mode (1/2): ").strip()
     
     if choice == '1':
         bridge = HybridBridge(mode='online')
     else:
         maintain_models()
-        bridge = HybridBridge(mode='offline', local_model="gemma3n:e2b")
+        bridge = HybridBridge(mode='offline', local_model="gemma4:e2b")
     
     application = ApplicationBuilder().token(TOKEN).build()
     application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message))
